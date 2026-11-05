@@ -13,7 +13,9 @@
         --g: #16ff3c;
         --k: #050308;
         --w: #f6f2ff;
-        --muted: #b9aed6;
+        --muted: #c9b9ef;
+        --card: #110d1b;
+        --line: rgba(255,255,255,0.08);
       }
 
       * { box-sizing: border-box; }
@@ -27,12 +29,25 @@
       body {
         display: grid;
         place-items: center;
-        padding: 32px 20px;
+        padding: 28px 18px;
         background: var(--k);
         color: var(--w);
         font: 500 18px/1.5 Rajdhani, system-ui, sans-serif;
         overflow-x: hidden;
         position: relative;
+      }
+
+      #bg-video {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.22) saturate(0.7) blur(2px);
+        opacity: 0.7;
+        transform: scale(1.2);
+        pointer-events: none;
+        z-index: 0;
       }
 
       body:before {
@@ -41,80 +56,117 @@
         inset: 0;
         pointer-events: none;
         z-index: 0;
-        opacity: .08;
-        background: repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 3px);
+        background: rgba(5, 3, 8, 0.7);
       }
 
       .wrap {
         position: relative;
         z-index: 1;
-        width: min(760px, 100%);
+        width: min(1040px, 100%);
       }
 
-      .card {
+      .panel {
         position: relative;
-        text-align: center;
-        padding: 36px 24px 30px;
-        background: #0d0a13;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: center;
+        gap: 28px;
+        background: linear-gradient(180deg, rgba(17,13,27,0.98), rgba(10,8,16,0.98));
         border: 3px solid #000;
-        box-shadow: 12px 12px 0 var(--p), 0 0 0 1px rgba(255,255,255,0.04);
+        box-shadow: 12px 12px 0 var(--p), 0 24px 80px rgba(0,0,0,0.45);
+        padding: 34px 28px 28px;
+        overflow: hidden;
       }
 
-      .card::before {
+      .panel::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(120deg, rgba(138,28,255,.08), rgba(22,255,60,.04));
+        background: linear-gradient(115deg, rgba(138,28,255,0.12), rgba(22,255,60,0.04), transparent 62%);
         pointer-events: none;
       }
 
-      .card > * { position: relative; z-index: 1; }
+      .panel > * { position: relative; z-index: 1; }
+
+      .info {
+        text-align: left;
+        padding: 14px 6px 14px 4px;
+      }
 
       .tag {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 18px;
         padding: 8px 14px;
         background: var(--p);
         color: #fff;
-        font: 400 12px Bungee, Impact, sans-serif;
-        letter-spacing: 0.08em;
         border: 3px solid #000;
+        font: 400 12px Bungee, Impact, sans-serif;
+        letter-spacing: .1em;
+        text-transform: uppercase;
         transform: rotate(-2deg);
-        text-transform: uppercase;
       }
 
-      img {
-        display: block;
-        width: min(230px, 62vw);
-        margin: 0 auto 10px;
-        filter: drop-shadow(8px 10px 0 #000);
+      .tag::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--g);
+        box-shadow: 0 0 14px rgba(22,255,60,0.8);
       }
 
-      h1 {
-        margin: 0;
-        font: 400 clamp(4rem, 11vw, 9rem) Bungee, Impact, sans-serif;
-        line-height: .85;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+      .num {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 8px;
+        font: 400 clamp(4.8rem, 8vw, 8rem) Bungee, Impact, sans-serif;
+        line-height: .82;
+        letter-spacing: .06em;
         color: var(--w);
         text-shadow: 6px 6px 0 var(--p);
       }
 
+      .num span {
+        position: absolute;
+        inset: auto auto -14% 8%;
+        font-size: clamp(7rem, 19vw, 19rem);
+        color: transparent;
+        -webkit-text-stroke: 2px rgba(255,255,255,0.08);
+        letter-spacing: 0;
+        z-index: -1;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font: 400 clamp(2.1rem, 4vw, 3.1rem) Bungee, Impact, sans-serif;
+        line-height: .9;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+
       p {
-        max-width: 500px;
-        margin: 18px auto 0;
+        max-width: 520px;
+        margin: 0;
         color: var(--muted);
-        font-size: clamp(1.05rem, 2vw, 1.35rem);
-        line-height: 1.4;
+        font-size: clamp(1.12rem, 2vw, 1.45rem);
+        line-height: 1.35;
       }
 
       .actions {
-        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 26px;
       }
 
-      a {
-        display: inline-block;
-        padding: 15px 26px;
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 200px;
+        padding: 15px 24px;
         background: var(--g);
         color: #000;
         text-decoration: none;
@@ -124,52 +176,164 @@
         transition: transform .15s ease, box-shadow .15s ease;
       }
 
-      a:hover {
+      .btn.secondary {
+        background: transparent;
+        color: var(--w);
+        box-shadow: 6px 6px 0 rgba(138,28,255,0.7);
+      }
+
+      .btn:hover {
         transform: translate(-2px, -2px);
         box-shadow: 8px 8px 0 var(--p);
       }
 
-      .ghost {
+      .mascot-wrap {
+        display: grid;
+        place-items: center;
+        position: relative;
+        min-height: 440px;
+      }
+
+      .mascot-box {
+        position: relative;
+        width: min(410px, 80vw);
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+        border: 2px solid var(--line);
+        border-radius: 28px;
+      }
+
+      .mascot-box::before {
+        content: "";
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -55%);
-        font: 400 clamp(7rem, 35vw, 22rem) Bungee, Impact, sans-serif;
-        color: transparent;
-        -webkit-text-stroke: 2px rgba(255,255,255,0.08);
-        line-height: 1;
-        pointer-events: none;
-        z-index: 0;
+        inset: 18px;
+        border: 2px dashed rgba(255,255,255,0.06);
+        border-radius: 22px;
+      }
+
+      .mascot-box img {
+        display: block;
+        width: min(260px, 62%);
+        filter: drop-shadow(8px 12px 0 #000);
+        position: relative;
+        z-index: 1;
+      }
+
+      .mini-expressions {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .mini {
+        display: grid;
+        place-items: center;
+        width: 64px;
+        height: 64px;
+        background: rgba(255,255,255,0.02);
+        border: 2px solid rgba(255,255,255,0.07);
+        border-radius: 14px;
+      }
+
+      .mini img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.3));
+      }
+
+      @media (max-width: 820px) {
+        .panel {
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 26px 20px 24px;
+        }
+
+        .info {
+          text-align: center;
+          padding: 0;
+        }
+
+        .actions {
+          justify-content: center;
+        }
+
+        .btn {
+          width: 100%;
+          min-width: unset;
+        }
+
+        .mascot-wrap {
+          min-height: 360px;
+        }
       }
 
       @media (max-width: 520px) {
-        .card {
-          padding: 28px 18px 26px;
+        body {
+          padding: 20px 12px;
         }
 
-        .ghost {
-          top: 46%;
+        .panel {
+          box-shadow: 8px 8px 0 var(--p);
         }
 
-        a {
-          width: 100%;
+        .tag {
+          letter-spacing: .07em;
+        }
+
+        .mini {
+          width: 54px;
+          height: 54px;
         }
       }
     </style>
   </head>
   <body>
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="/video/intro.mp4" type="video/mp4">
+    </video>
+
     <div class="wrap">
-      <div class="card">
-        <div class="ghost">404</div>
-        <div class="tag">Erro 404</div>
-        <img src="/img/scared.webp" alt="Mascote MD Bot confuso">
-        <h1>404</h1>
-        <p>Essa página não existe ou foi movida. Mas você ainda pode voltar ao início e continuar no MD Bot.</p>
-        <div class="actions">
-          <a href="/">Voltar ao início</a>
+      <div class="panel">
+        <div class="info">
+          <div class="tag">Erro 404</div>
+          <div class="num">404<span>404</span></div>
+          <h1>Rota perdida</h1>
+          <p>Essa página não existe, foi movida ou simplesmente decidiu sair de cena. Mas a jornada no MD Bot continua — volte ao início e siga firme.</p>
+          <div class="actions">
+            <a href="/" class="btn">Voltar ao início</a>
+            <a href="/" class="btn secondary">Explorar o site</a>
+          </div>
+        </div>
+
+        <div class="mascot-wrap">
+          <div class="mascot-box">
+            <img src="/img/scared.webp" alt="Mascote MD Bot assustado">
+            <div class="mini-expressions" aria-label="Expressões do mascote">
+              <div class="mini"><img src="/img/think.webp" alt="Mascote pensando"></div>
+              <div class="mini"><img src="/img/wave.webp" alt="Mascote acenando"></div>
+              <div class="mini"><img src="/img/lol.webp" alt="Mascote rindo"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <script>
+      const bgVideo = document.getElementById('bg-video');
+      if (bgVideo) {
+        bgVideo.playbackRate = 1.7;
+        bgVideo.play().catch(() => {});
+      }
+    </script>
   </body>
 </html>
 
