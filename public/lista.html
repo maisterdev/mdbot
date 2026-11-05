@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Painel | MD Bot</title>
+<link rel="icon" href="/img/logo.webp" type="image/webp">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/lista.css">
+</head>
+<body>
+<main id="login" class="card">
+  <img id="limg" src="/img/think.webp" alt="">
+  <h1>Painel administrativo</h1>
+  <p>Acesso restrito à equipe da MaisterDev Company.</p>
+  <form id="lf" autocomplete="on">
+    <label for="u">E-mail</label>
+    <input id="u" name="username" type="email" autocomplete="username" required maxlength="120">
+    <label for="p">Senha</label>
+    <input id="p" name="password" type="password" autocomplete="current-password" required maxlength="200">
+    <div id="cw" hidden><label for="c">Código do autenticador (2FA)</label><input id="c" inputmode="numeric" autocomplete="one-time-code" maxlength="8"></div>
+    <small id="lerr" role="alert"></small>
+    <button class="btn" type="submit" id="lbtn">Entrar</button>
+  </form>
+</main>
+
+<main id="dash" class="wrap" hidden>
+  <header class="bar">
+    <img src="/img/logo.webp" alt="MD Bot">
+    <nav class="tabs" id="tabs">
+      <button data-t="inscritos" class="on">Inscritos</button>
+      <button data-t="noticias">Notícias</button>
+      <button data-t="config">Configurações</button>
+      <button data-t="seguranca">Segurança</button>
+    </nav>
+    <div class="sp"></div>
+    <a class="btn s o" href="/" target="_blank" rel="noopener">Ver site</a>
+    <button class="btn s o" id="out">Sair</button>
+  </header>
+
+  <section id="t-inscritos" class="tab">
+    <div class="stats">
+      <div><b id="s1">0</b><span>inscritos</span></div><div><b id="s2">0</b><span>hoje</span></div><div><b id="s3">0</b><span>7 dias</span></div>
+    </div>
+    <div class="row"><input id="q" class="srch" type="search" placeholder="Buscar por nome, e-mail, servidor ou Discord"><a class="btn s" href="/api/admin/export.csv">Baixar CSV</a><button class="btn s" id="cp">Copiar e-mails</button></div>
+    <div class="tw"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Servidor</th><th>Discord</th><th>Data</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+    <p id="empty" class="mut" hidden>Nenhum inscrito encontrado.</p>
+  </section>
+
+  <section id="t-noticias" class="tab" hidden>
+    <div class="grid2">
+      <div>
+        <h2>Notícias</h2>
+        <p class="mut l">As notícias publicadas aparecem num popup para quem entra no site (cada pessoa vê uma vez).</p>
+        <div id="nl" class="nl"></div>
+      </div>
+      <form id="nf" class="pan">
+        <h2 id="nh">Nova notícia</h2>
+        <input type="hidden" id="nid">
+        <label for="nt">Título (até 80)</label><input id="nt" maxlength="80" required>
+        <label for="nx">Texto (até 800)</label><textarea id="nx" rows="5" maxlength="800" required></textarea>
+        <div class="two">
+          <div><label for="ny">Tipo</label><select id="ny"><option value="novidade">Novidade</option><option value="aviso">Aviso</option><option value="lancamento">Lançamento</option><option value="evento">Evento</option></select></div>
+          <div><label for="ni">Mascote</label><select id="ni"></select></div>
+        </div>
+        <div class="two">
+          <div><label for="nb">Texto do botão (opcional)</label><input id="nb" maxlength="30"></div>
+          <div><label for="nu">Link do botão (https://)</label><input id="nu" maxlength="300" placeholder="https://"></div>
+        </div>
+        <label class="ck"><input type="checkbox" id="np" checked> Publicada (visível no site)</label>
+        <label class="ck"><input type="checkbox" id="nn"> Fixar no topo</label>
+        <small id="nerr" role="alert"></small>
+        <div class="acts"><button class="btn" type="submit">Salvar notícia</button><button class="btn o" type="button" id="nnew">Nova</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section id="t-config" class="tab" hidden>
+    <form id="cf" class="pan wide">
+      <h2>Configurações do site</h2>
+      <h3>Links</h3>
+      <label for="cd">Convite da comunidade no Discord</label><input id="cd" maxlength="300" required placeholder="https://discord.gg/...">
+      <label for="ci">Link de convite do bot (deixe vazio enquanto não for público)</label><input id="ci" maxlength="300" placeholder="https://discord.com/oauth2/authorize?...">
+      <p class="mut">Ao preencher o link do bot, os botões "Adicionar ao servidor" do site ficam ativos automaticamente.</p>
+      <h3>Faixa de aviso (topo do site)</h3>
+      <label class="ck"><input type="checkbox" id="cbe"> Mostrar faixa</label>
+      <label for="cbt">Texto da faixa</label><input id="cbt" maxlength="200">
+      <h3>Vídeo de abertura (cutscene)</h3>
+      <label class="ck"><input type="checkbox" id="cve"> Exibir vídeo logo após o carregamento</label>
+      <label class="ck"><input type="checkbox" id="cvo"> Mostrar só na primeira visita de cada pessoa</label>
+      <label for="cvs">Arquivo atual</label><input id="cvs" maxlength="120" placeholder="/video/intro.mp4">
+      <div class="acts" id="cvup"><input type="file" id="cvf" accept="video/mp4,video/webm"><button class="btn s" type="button" id="cvu">Enviar novo vídeo</button></div>
+      <p class="mut" id="cvn" hidden>Nesta hospedagem o envio direto não está disponível. Coloque o arquivo MP4 na pasta <b>public/video/</b> do projeto, publique de novo e informe o caminho acima (ex.: /video/meu-video.mp4).</p>
+      <progress id="cvp" max="100" value="0" hidden></progress>
+      <video id="cvv" controls playsinline preload="metadata" class="pv"></video>
+      <h3>Notícias</h3>
+      <label class="ck"><input type="checkbox" id="cne"> Exibir popup de notícias no site</label>
+      <h3>Manutenção</h3>
+      <label class="ck"><input type="checkbox" id="cme"> Ativar modo manutenção (o site público fica fora do ar, o painel continua acessível)</label>
+      <label for="cmm">Mensagem</label><input id="cmm" maxlength="200">
+      <small id="cerr" role="alert"></small>
+      <button class="btn" type="submit">Salvar configurações</button>
+    </form>
+  </section>
+
+  <section id="t-seguranca" class="tab" hidden>
+    <div class="grid2">
+      <div class="pan">
+        <h2>Conta</h2>
+        <form id="pf">
+          <label for="pc">Senha atual</label><input id="pc" type="password" autocomplete="current-password" maxlength="200">
+          <label for="pn">Nova senha (mín. 12 caracteres)</label><input id="pn" type="password" autocomplete="new-password" maxlength="200">
+          <small id="perr" role="alert"></small>
+          <button class="btn" type="submit">Alterar senha</button>
+        </form>
+        <hr>
+        <p class="mut">Encerra o login em todos os dispositivos (inclusive este).</p>
+        <button class="btn o" id="la">Sair de todos os dispositivos</button>
+        <hr>
+        <p class="mut">Cópia completa dos dados (inscritos, notícias e configurações).</p>
+        <a class="btn s" href="/api/admin/backup">Baixar backup (JSON)</a>
+        <p class="mut" id="tf"></p>
+      </div>
+      <div class="pan">
+        <h2>Registro de segurança</h2>
+        <div class="tw"><table><thead><tr><th>Quando</th><th>Evento</th><th>IP</th><th>Detalhe</th></tr></thead><tbody id="lg"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="toast" class="toast"></div>
+<script src="/js/lista.js"></script>
+</body>
+</html>

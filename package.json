@@ -1,0 +1,16 @@
+{
+  "name": "md-bot-site",
+  "version": "2.0.0",
+  "description": "Site oficial do MD Bot (MaisterDev Company): site + API + painel /lista. Roda em Node.js (qualquer hospedagem) e no Netlify.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "hash": "node tools/hash-password.js",
+    "totp": "node tools/totp-secret.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
